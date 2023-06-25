@@ -1,0 +1,183 @@
+Q1. Explain why we have to use the Exception class while creating a Custom Exception.
+Ans.Built-in exceptions offer information about Python-related problems, and custom exceptions will add information about project-related problems. That way, you can design your code (and traceback, if an exception is raised) in a way that combines Python code with the language of the project
+
+Q2. Write a python program to print Python Exception Hierarchy.
+Ans.
+
+
+import inspect
+def treeClass(cls,ind=0):
+    print('-'*ind,cls.__name__)
+    for i in cls.__subclasses__():
+        treeClass(i,ind+3)
+
+        
+print("hierarchy for Built-in exceptionn is:")
+inspect.getclasstree(inspect.getmro(BaseException))
+treeClass(BaseException)
+
+output:-
+
+Hierarchy for Built-in exceptions is : 
+ BaseException
+--- Exception
+------ TypeError
+------ StopAsyncIteration
+------ StopIteration
+------ ImportError
+--------- ModuleNotFoundError
+--------- ZipImportError
+------ OSError
+--------- ConnectionError
+------------ BrokenPipeError
+------------ ConnectionAbortedError
+------------ ConnectionRefusedError
+------------ ConnectionResetError
+--------- BlockingIOError
+--------- ChildProcessError
+--------- FileExistsError
+--------- FileNotFoundError
+--------- IsADirectoryError
+--------- NotADirectoryError
+--------- InterruptedError
+--------- PermissionError
+--------- ProcessLookupError
+--------- TimeoutError
+--------- UnsupportedOperation
+------ EOFError
+------ RuntimeError
+--------- RecursionError
+--------- NotImplementedError
+--------- _DeadlockError
+------ NameError
+--------- UnboundLocalError
+------ AttributeError
+------ SyntaxError
+--------- IndentationError
+------------ TabError
+------ LookupError
+--------- IndexError
+--------- KeyError
+--------- CodecRegistryError
+------ ValueError
+--------- UnicodeError
+------------ UnicodeEncodeError
+------------ UnicodeDecodeError
+------------ UnicodeTranslateError
+--------- UnsupportedOperation
+------ AssertionError
+------ ArithmeticError
+--------- FloatingPointError
+--------- OverflowError
+--------- ZeroDivisionError
+------ SystemError
+--------- CodecRegistryError
+------ ReferenceError
+------ MemoryError
+------ BufferError
+------ Warning
+--------- UserWarning
+--------- DeprecationWarning
+--------- PendingDeprecationWarning
+--------- SyntaxWarning
+--------- RuntimeWarning
+--------- FutureWarning
+--------- ImportWarning
+--------- UnicodeWarning
+--------- BytesWarning
+--------- ResourceWarning
+------ _OptionError
+------ error
+------ Verbose
+------ Error
+------ TokenError
+------ StopTokenizing
+------ EndOfBlock
+--- GeneratorExit
+--- SystemExit
+--- KeyboardInterrupt
+
+
+
+Q3. What errors are defined in the ArithmeticError class? Explain any two with an example.
+Ans.The arithmetic error occurs when an error is encountered during numeric calculations in Python. This includes Zerodivision Error and Floating point error. In addition, zero division error is raised when you divide a numeric value by zero. When we run this code, we will get a ZeroDivision error.
+
+Q4. Why LookupError class is used? Explain with an example KeyError and IndexError.
+Ans.The LookupError exception in Python forms the base class for all exceptions that are raised when an index or a key is not found for a sequence or dictionary respectively.
+
+You can use LookupError exception class to handle both IndexError and KeyError exception classes.
+
+- LookupError
+ --> IndexError
+ --> KeyError
+
+
+Q5. Explain ImportError. What is ModuleNotFoundError?
+Ans.Python's ImportError ( ModuleNotFoundError ) indicates that you tried to import a module that Python doesn't find. It can usually be eliminated by adding a file named __init__.py to the directory and then adding this directory to $PYTHONPATH .
+
+
+Q6. List down some best practices for exception handling in python.
+
+#use  always a specific exception
+try:
+    10/0
+except Exception as e:#use particular exception bot Exception
+    print(e)
+>>division by zero
+
+
+try:
+    10/0
+except ZeroDivisionError as e:#use particular exception bot Exception
+    print(e)
+>>division by zero
+
+#if not sure of name then go ahead with exception
+#but this not a good prctice
+#print always a valid message , people will be easily debug the code
+#print always a valid msg
+try:
+    10/0
+except ZeroDivisionError as e:
+    print("this is my zero division error i am handling ",e)
+>>this is my zero division error i am handling  division by zero
+
+
+#always try to log dont use print log helps to save as a file
+import logging
+logging.basicConfig(filename="error.log",level=logging.ERROR)
+try:
+    10/0
+except ZeroDivisionError as e:
+    logging.error("this is my zero division error i am handling {} ".format(e))
+
+
+#always avoid to write a multiple exception handling 
+try:
+    10/0
+except FileNotFoundError as e:
+    logging.error("this is my file not found {} ".format( e))
+except AttributeError as e:
+    logging.error("this is my attribute error {} ".format( e))
+except ZeroDivisionError as e:
+    logging.error("this is my zerodivision error {} ".format( e))
+
+
+
+
+#cleanup all thhe resources 
+
+try:
+    with open("fele__.txt","w") as f:
+        f.write("this is a message ")
+except FileNotFound as e:
+    logging.error("this is my filenotfoundError {}".format( e))
+finally:
+    f.close()
+
+
+
+
+
+
+
